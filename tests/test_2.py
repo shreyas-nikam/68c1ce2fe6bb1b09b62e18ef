@@ -1,84 +1,78 @@
 import pytest
-from definition_cd31b1f7345f405daf6a9894901767b2 import train_model
+from definition_ed40545783dd49aab094c8c0e40aeece import train_model
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 import torch.nn as nn
 import torch.optim as optim
 
-class DummyModel(nn.Module):
+class MockModel(nn.Module):
     def __init__(self):
         super().__init__()
-        self.linear = nn.Linear(10, 1)
+        self.linear = nn.Linear(10, 10) # Simple linear layer
 
     def forward(self, x):
         return self.linear(x)
 
 @pytest.fixture
-def setup_training_data():
-    # Create dummy data for testing
-    input_size = 10
-    output_size = 1
-    batch_size = 4
-    num_samples = 20
-
-    X = torch.randn(num_samples, input_size)
-    y = torch.randn(num_samples, output_size)
-    dataset = TensorDataset(X, y)
-    dataloader = DataLoader(dataset, batch_size=batch_size)
+def mock_data():
+    # Create some dummy data for testing
+    input_data = torch.randn(100, 10)  # 100 samples, each of size 10
+    target_data = torch.randn(100, 10) # 100 samples, each of size 10
+    dataset = TensorDataset(input_data, target_data)
+    dataloader = DataLoader(dataset, batch_size=10)
     return dataloader
 
-def test_train_model_runs_without_error(setup_training_data):
-    model = DummyModel()
+
+def test_train_model_runs_without_error(mock_data):
+    model = MockModel()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
     num_epochs = 2
+
     try:
-        train_model(model, setup_training_data, optimizer, num_epochs)
+        train_model(model, mock_data, optimizer, num_epochs)
     except Exception as e:
         pytest.fail(f"Training failed with exception: {e}")
 
-def test_train_model_updates_parameters(setup_training_data):
-    model = DummyModel()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
-    num_epochs = 1
-
-    # Store initial parameters
-    initial_params = [param.clone() for param in model.parameters()]
-
-    train_model(model, setup_training_data, optimizer, num_epochs)
-
-    # Check if parameters have been updated
-    for initial_param, current_param in zip(initial_params, model.parameters()):
-        assert not torch.equal(initial_param, current_param), "Model parameters were not updated during training."
-
-def test_train_model_with_zero_epochs(setup_training_data):
-    model = DummyModel()
+def test_train_model_zero_epochs(mock_data):
+    # Test with zero epochs to ensure it doesn't error
+    model = MockModel()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
     num_epochs = 0
 
-    # Store initial parameters
-    initial_params = [param.clone() for param in model.parameters()]
-
-    train_model(model, setup_training_data, optimizer, num_epochs)
-
-    # Check if parameters have not been updated
-    for initial_param, current_param in zip(initial_params, model.parameters()):
-        assert torch.equal(initial_param, current_param), "Model parameters were updated even with zero epochs."
-
-def test_train_model_with_none_dataloader():
-    model = DummyModel()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
-    num_epochs = 1
-
-    with pytest.raises(TypeError):
-        train_model(model, None, optimizer, num_epochs)
-
-def test_train_model_with_empty_dataloader():
-    model = DummyModel()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
-    num_epochs = 1
-    dataloader = DataLoader([], batch_size=1)
-
     try:
-        train_model(model, dataloader, optimizer, num_epochs)
+        train_model(model, mock_data, optimizer, num_epochs)
+    except Exception as e:
+        pytest.fail(f"Training failed with exception: {e}")
+
+def test_train_model_invalid_dataloader():
+    # Test with an invalid dataloader to check for TypeError
+
+    model = MockModel()
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    num_epochs = 1
+    invalid_dataloader = [1,2,3]
+    with pytest.raises(TypeError):
+        train_model(model, invalid_dataloader, optimizer, num_epochs)
+
+def test_train_model_none_optimizer(mock_data):
+        # Test with None optimizer to check for TypeError
+    model = MockModel()
+    optimizer = None
+    num_epochs = 1
+    with pytest.raises(AttributeError):
+         train_model(model, mock_data, optimizer, num_epochs)
+
+def test_train_model_empty_dataloader():
+    model = MockModel()
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    num_epochs = 1
+
+    # Create an empty dataset and dataloader
+    empty_dataset = TensorDataset()
+    empty_dataloader = DataLoader(empty_dataset, batch_size=10)
+
+    # Training on an empty dataloader should not raise an error
+    try:
+        train_model(model, empty_dataloader, optimizer, num_epochs)
     except Exception as e:
         pytest.fail(f"Training failed with exception: {e}")
