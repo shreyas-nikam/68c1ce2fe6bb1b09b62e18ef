@@ -1,13 +1,13 @@
 import pytest
 import torch
-from definition_d4304ebb42d0441eaedf66d3cdad1bd6 import multi_head_attention
+from definition_c6c9a1bfe4c5448db6cb63add2560a3c import multi_head_attention
 
 @pytest.fixture
 def sample_data():
-    # Example data: batch_size=2, seq_len=3, d_model=4
+    # Example data for testing
     batch_size = 2
-    seq_len = 3
-    d_model = 4
+    seq_len = 5
+    d_model = 4  # Embedding dimension
     num_heads = 2
     query = torch.randn(batch_size, seq_len, d_model)
     key = torch.randn(batch_size, seq_len, d_model)
@@ -17,48 +17,41 @@ def sample_data():
 
 def test_multi_head_attention_no_mask(sample_data):
     query, key, value, num_heads = sample_data
-    try:
-      output = multi_head_attention(query, key, value, num_heads, mask=None)
-      assert output is None # Replace with checks of output shape and type if you implement the function
-    except NotImplementedError:
-      pass
+    output = multi_head_attention(query, key, value, num_heads, mask=None)
+    assert output is not None
+    # Basic check to ensure output has the correct shape - adjust as needed
+    assert output.shape == query.shape # Most likely output shape. Needs actual implementation
 
 def test_multi_head_attention_with_mask(sample_data):
     query, key, value, num_heads = sample_data
     batch_size, seq_len, _ = query.shape
-    mask = torch.ones(seq_len, seq_len)
-    mask = torch.triu(mask, diagonal=1).bool() # Example mask
-    try:
-      output = multi_head_attention(query, key, value, num_heads, mask)
-      assert output is None # Replace with checks of output shape and type if you implement the function
-    except NotImplementedError:
-      pass
+    mask = torch.ones(seq_len, seq_len).tril() == 0 # Lower triangular mask
+    output = multi_head_attention(query, key, value, num_heads, mask=mask)
+    assert output is not None
+    assert output.shape == query.shape
 
 def test_multi_head_attention_invalid_num_heads(sample_data):
-    query, key, value = sample_data[:3]
-    num_heads = -1  # Invalid number of heads
-    mask = None
+    query, key, value, _ = sample_data
+    num_heads = 0
     with pytest.raises(ValueError):
-        multi_head_attention(query, key, value, num_heads, mask)
+        multi_head_attention(query, key, value, num_heads, mask=None) #Assuming implementation throws ValueError
 
-def test_multi_head_attention_different_dims(sample_data):
-    query, key = sample_data[:2]
-    value = torch.randn(1,2,3)
-    num_heads = 2
-    mask = None
-    with pytest.raises(RuntimeError):
-        multi_head_attention(query, key, value, num_heads, mask)
+def test_multi_head_attention_different_embedding_dims():
+        batch_size = 2
+        seq_len = 5
+        d_model_query = 4
+        d_model_key = 8
+        num_heads = 2
+        query = torch.randn(batch_size, seq_len, d_model_query)
+        key = torch.randn(batch_size, seq_len, d_model_key)
+        value = torch.randn(batch_size, seq_len, d_model_key) #Value needs to have same dimension as Key
+        with pytest.raises(RuntimeError): #Assuming implementation throws RuntimeError or related
+             multi_head_attention(query, key, value, num_heads, mask=None)
 
 def test_multi_head_attention_empty_input():
-  query = torch.empty(0,0,0)
-  key = torch.empty(0,0,0)
-  value = torch.empty(0,0,0)
-  num_heads = 2
-  mask = None
-
-  try:
-    output = multi_head_attention(query, key, value, num_heads, mask)
-    assert output is None
-  except NotImplementedError:
-    pass
-
+    query = torch.empty(0, 0, 0)
+    key = torch.empty(0, 0, 0)
+    value = torch.empty(0, 0, 0)
+    num_heads = 2
+    with pytest.raises(RuntimeError): # Or perhaps another error like IndexError
+        multi_head_attention(query, key, value, num_heads, mask=None)
