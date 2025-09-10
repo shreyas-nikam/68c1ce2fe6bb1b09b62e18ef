@@ -1,40 +1,36 @@
 import pytest
+from definition_06297da19b714ee2b26b83608f61b8e2 import build_transformer_model
 import torch
-import torch.nn as nn
-from definition_64d1e54f783e45409443e33301dfd8fa import build_transformer_model
 
-@pytest.fixture
-def model_params():
-    return {
-        "vocab_size": 100,
-        "d_model": 32,
-        "nhead": 4,
-        "num_layers": 2,
-        "dim_feedforward": 64,
-    }
+@pytest.mark.parametrize("vocab_size, d_model, nhead, num_layers, dim_feedforward, expected_output", [
+    (1000, 512, 8, 6, 2048, torch.nn.Transformer),
+    (500, 256, 4, 3, 1024, torch.nn.Transformer),
+    (2000, 128, 2, 2, 512, torch.nn.Transformer),
+])
+def test_build_transformer_model(vocab_size, d_model, nhead, num_layers, dim_feedforward, expected_output):
+    model = build_transformer_model(vocab_size, d_model, nhead, num_layers, dim_feedforward)
+    assert isinstance(model, expected_output)
 
-def test_build_transformer_model_output_type(model_params):
-    model = build_transformer_model(**model_params)
-    assert isinstance(model, nn.Module), "build_transformer_model should return a PyTorch nn.Module"
+@pytest.mark.parametrize("vocab_size, d_model, nhead, num_layers, dim_feedforward", [
+    (100, 64, 4, 2, 256),
+])
+def test_transformer_model_output_shape(vocab_size, d_model, nhead, num_layers, dim_feedforward):
+    model = build_transformer_model(vocab_size, d_model, nhead, num_layers, dim_feedforward)
+    src = torch.randint(0, vocab_size, (10, 32))
+    tgt = torch.randint(0, vocab_size, (10, 32))
+    output = model(src, tgt)
+    assert output.shape == (32, 10, vocab_size)
 
-def test_build_transformer_model_vocab_size(model_params):
-    model = build_transformer_model(**model_params)
-    assert model.encoder.layers[0].self_attn.embed_dim == model_params["d_model"]
+@pytest.mark.parametrize("vocab_size, d_model, nhead, num_layers, dim_feedforward", [
+    (100, 64, 4, 2, 256),
+])
+def test_transformer_model_trainable_parameters(vocab_size, d_model, nhead, num_layers, dim_feedforward):
+    model = build_transformer_model(vocab_size, d_model, nhead, num_layers, dim_feedforward)
+    parameters = list(model.parameters())
+    assert len(parameters) > 0
 
-def test_build_transformer_model_num_layers(model_params):
-    model = build_transformer_model(**model_params)
-    assert len(model.encoder.layers) == model_params["num_layers"]
 
-def test_build_transformer_model_num_heads(model_params):
-    model = build_transformer_model(**model_params)
-    assert model.encoder.layers[0].self_attn.num_heads == model_params["nhead"]
-
-def test_build_transformer_model_forward_pass(model_params):
-    model = build_transformer_model(**model_params)
-    src = torch.randint(0, model_params["vocab_size"], (1, 10))  # Batch size 1, sequence length 10
-    try:
-        output = model(src, src)  # Pass source and target for simplicity
-        assert output.shape == (1, 10, model_params["d_model"])
-    except Exception as e:
-        pytest.fail(f"Forward pass failed with exception: {e}")
+def test_build_transformer_model_invalid_input():
+    with pytest.raises(TypeError):
+        build_transformer_model("invalid", 512, 8, 6, 2048)
 
