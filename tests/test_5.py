@@ -1,10 +1,10 @@
 import pytest
 import torch
-from definition_51739bc7d2114b6fabaa7bd04d9c7a04 import calculate_attention_weights
+from definition_95b11afe4abd49f49582a226a5165357 import calculate_attention_weights
 
 @pytest.fixture
 def sample_query_key_value():
-    # Create sample tensors for query, key, and value
+    # Create sample query, key, and value matrices for testing
     batch_size = 2
     seq_len = 3
     d_model = 4
@@ -13,44 +13,44 @@ def sample_query_key_value():
     value = torch.randn(batch_size, seq_len, d_model)
     return query, key, value
 
+
 def test_calculate_attention_weights_no_mask(sample_query_key_value):
     query, key, value = sample_query_key_value
-    attention_weights, attended_values = calculate_attention_weights(query, key, value, mask=None)
-    assert attention_weights.shape == (query.shape[0], query.shape[1], key.shape[1])
-    assert attended_values.shape == value.shape
+    attention_weights = calculate_attention_weights(query, key, value, mask=None)
+    assert attention_weights.shape == (query.size(0), query.size(1), key.size(1))
+
 
 def test_calculate_attention_weights_with_mask(sample_query_key_value):
     query, key, value = sample_query_key_value
-    # Create a sample mask (e.g., to mask padding tokens)
-    mask = torch.tensor([[False, False, True], [False, True, True]])
-    attention_weights, attended_values = calculate_attention_weights(query, key, value, mask=mask)
-    assert attention_weights.shape == (query.shape[0], query.shape[1], key.shape[1])
-    assert attended_values.shape == value.shape
+    mask = torch.ones(query.size(0), query.size(1), key.size(1)).bool()
+    mask[:, :, 0] = False  # Mask the first position
+    attention_weights = calculate_attention_weights(query, key, value, mask=mask)
 
-def test_calculate_attention_weights_query_key_value_different_lengths():
-    batch_size = 2
-    d_model = 4
-    query = torch.randn(batch_size, 2, d_model)
-    key = torch.randn(batch_size, 3, d_model)
-    value = torch.randn(batch_size, 3, d_model)
-    attention_weights, attended_values = calculate_attention_weights(query, key, value, mask=None)
-    assert attention_weights.shape == (query.shape[0], query.shape[1], key.shape[1])
-    assert attended_values.shape == value.shape
+    # Check that the masked positions have very low attention weights
+    assert torch.all(attention_weights[:, :, 0] <= -1e9) #Masked values should be close to negative infinity
 
-def test_calculate_attention_weights_zero_dimension():
-     # Create sample tensors for query, key, and value
-    batch_size = 0
-    seq_len = 3
-    d_model = 4
-    query = torch.randn(batch_size, seq_len, d_model)
-    key = torch.randn(batch_size, seq_len, d_model)
-    value = torch.randn(batch_size, seq_len, d_model)
-    with pytest.raises(Exception):
-        calculate_attention_weights(query, key, value, mask=None)
 
-def test_calculate_attention_weights_invalid_mask_shape(sample_query_key_value):
+def test_calculate_attention_weights_different_lengths(sample_query_key_value):
     query, key, value = sample_query_key_value
-    # Create an invalid mask with incorrect shape
-    mask = torch.randn(2, 4)  # Incorrect shape
-    with pytest.raises(RuntimeError): # Or a more specific exception based on your implementation
-        calculate_attention_weights(query, key, value, mask=mask)
+    # Change key length
+    key = torch.randn(query.size(0), query.size(1) + 1, query.size(2))
+    value = torch.randn(query.size(0), query.size(1) + 1, query.size(2))
+    attention_weights = calculate_attention_weights(query, key, value, mask=None)
+    assert attention_weights.shape == (query.size(0), query.size(1), key.size(1))
+
+def test_calculate_attention_weights_batched_mask(sample_query_key_value):
+    query, key, value = sample_query_key_value
+    batch_size = query.size(0)
+    seq_len_q = query.size(1)
+    seq_len_k = key.size(1)
+    mask = torch.ones(batch_size, seq_len_q, seq_len_k).bool()
+    mask[0, :, 0] = False # mask first position in first batch
+    mask[1, :, 1] = False # mask second position in second batch
+
+    attention_weights = calculate_attention_weights(query, key, value, mask)
+    assert torch.all(attention_weights[0, :, 0] <= -1e9)
+    assert torch.all(attention_weights[1, :, 1] <= -1e9)
+
+def test_calculate_attention_weights_incorrect_input_types():
+    with pytest.raises(TypeError):
+        calculate_attention_weights("query", 123, [1,2,3], {1:"mask"})
