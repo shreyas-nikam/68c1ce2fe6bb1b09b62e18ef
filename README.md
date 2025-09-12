@@ -1,20 +1,18 @@
-# QuLab: Transformer Models Exploration
+# QuLab: Transformer Models Visualization
 
-## Description
-QuLab is an interactive Streamlit application designed to explore the fascinating world of Transformer models, focusing specifically on the self-attention mechanism. This application allows users to visualize attention weights, understand how synthetic data is generated and validated, and gain deeper insights into the "Attention Is All You Need" paradigm.
+## Project Description
+QuLab is an interactive Streamlit application designed to explore the fascinating world of Transformer models, with a specific focus on the self-attention mechanism. This application allows users to visualize attention weights, understand how synthetic data is generated and validated, and gain deeper insights into the "Attention Is All You Need" paradigm.
 
 ## Features
-- **Self-Attention Visualization**: Visualize how self-attention works in Transformer models.
-- **Multi-Head Attention**: Explore the concept of multi-head attention and its benefits.
-- **Positional Encoding**: Understand how positional encoding helps Transformers maintain the order of sequences.
-- **Interactive UI**: User-friendly interface with sliders and input fields for customization.
-- **Data Generation**: Generate synthetic data for testing and visualization purposes.
-- **Visualization Tools**: Utilize Plotly for interactive heatmaps of attention weights.
+- **Self-Attention Visualization**: Analyze how Transformers weigh the importance of different words in a sentence.
+- **Multi-Head Attention Visualization**: Explore how multiple attention heads capture diverse relationships in the data.
+- **Positional Encoding Visualization**: Understand how positional encodings help Transformers maintain the order of words in a sequence.
+- **Interactive Interface**: User-friendly sidebar for input parameters and navigation between different visualizations.
 
 ## Getting Started
 
 ### Prerequisites
-To run this application, ensure you have the following installed:
+To run this application, you need to have the following installed:
 - Python 3.7 or higher
 - Streamlit
 - PyTorch
@@ -29,9 +27,10 @@ To run this application, ensure you have the following installed:
    git clone https://github.com/yourusername/qulab.git
    cd qulab
    ```
+
 2. Install the required packages:
    ```bash
-   pip install -r requirements.txt
+   pip install streamlit torch transformers plotly pandas numpy
    ```
 
 ## Usage
@@ -39,29 +38,26 @@ To run the application, execute the following command in your terminal:
 ```bash
 streamlit run app.py
 ```
-Once the application is running, open your web browser and navigate to `http://localhost:8501` to access the interface.
+Once the application is running, you can access it in your web browser at `http://localhost:8501`.
 
 ### Basic Usage Instructions
-1. Use the sidebar to navigate between different sections: Self-Attention Visualization, Multi-Head Attention, and Positional Encoding.
-2. Adjust the parameters such as vocabulary size, maximum sentence length, and number of sentences using the sliders.
-3. Enter a sentence for analysis or generate synthetic data by leaving the input field empty.
-4. Click the "Run Analysis" button to visualize the attention weights or positional encodings.
+1. **Select a Page**: Use the sidebar to navigate between "Self-Attention Visualization", "Multi-Head Attention", and "Positional Encoding".
+2. **Input Parameters**: Adjust the parameters in the sidebar to customize the analysis.
+3. **Run Analysis**: Click the "Run Analysis" button to generate data and visualize the attention mechanisms.
 
 ## Project Structure
 ```
 qulab/
 │
 ├── app.py                     # Main application file
-├── application_pages/         # Directory containing different application pages
-│   ├── page1.py               # Self-Attention Visualization
-│   ├── page2.py               # Multi-Head Attention Visualization
-│   └── page3.py               # Positional Encoding Visualization
-├── requirements.txt           # Python dependencies
-└── README.md                  # Project documentation
+└── application_pages/         # Directory for different visualization pages
+    ├── page1.py               # Self-Attention Visualization
+    ├── page2.py               # Multi-Head Attention Visualization
+    └── page3.py               # Positional Encoding Visualization
 ```
 
 ## Technology Stack
-- **Streamlit**: For building the web application.
+- **Streamlit**: For building the web application interface.
 - **PyTorch**: For implementing the neural network models.
 - **Transformers**: For tokenization and pre-trained models.
 - **Plotly**: For interactive visualizations.
@@ -69,21 +65,14 @@ qulab/
 - **NumPy**: For numerical operations.
 
 ## Contributing
-Contributions are welcome! If you would like to contribute to this project, please follow these steps:
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes and commit them (`git commit -m 'Add new feature'`).
-4. Push to the branch (`git push origin feature-branch`).
-5. Create a pull request.
+Contributions are welcome! If you have suggestions for improvements or new features, please fork the repository and submit a pull request. Ensure that your code adheres to the project's coding standards and includes appropriate tests.
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
 ## Contact
-For any inquiries or feedback, please reach out to:
-- **Your Name**: [your.email@example.com](mailto:your.email@example.com)
-- GitHub: [yourusername](https://github.com/yourusername)
+For any inquiries or feedback, please contact:
+- **Your Name**: your.email@example.com
+- **GitHub**: [yourusername](https://github.com/yourusername)
 
----
-
-Feel free to explore and experiment with the QuLab application to deepen your understanding of Transformer models and their mechanisms!
+Feel free to reach out for any questions or suggestions regarding the QuLab application!
