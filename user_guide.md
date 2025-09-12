@@ -3,147 +3,105 @@ summary: Testing Transformers User Guide
 feedback link: https://docs.google.com/forms/d/e/1FAIpQLSfWkOK-in_bMMoHSZfcIvAeO58PAH9wrDqcxnJABHaxiDqhSA/viewform?usp=sf_link
 environments: Web
 status: Published
-# QuLab: Unveiling the Magic of Transformer Models
+# QuLab: Exploring Transformer Architectures
 
-## Welcome to QuLab: Unlocking Transformer's Attention
-Duration: 00:05:00
-
-Welcome to QuLab, an interactive playground designed to demystify the core mechanisms of Transformer models! In this lab, we embark on a journey into the world of "Attention Is All You Need," the groundbreaking paper that introduced the Transformer architecture.
-
-<aside class="positive">
-Understanding Transformer models is <b>essential</b> for anyone involved in modern Artificial Intelligence, especially in Natural Language Processing (NLP). This application provides a hands-on approach to grasp these complex concepts.
-</aside>
-
-This QuLab application will guide you through three fundamental components that make Transformers so powerful:
-
-1.  **Self-Attention Visualization**: Discover how the model weighs the importance of different words in a sentence, establishing connections and context.
-2.  **Multi-Head Attention**: Explore how Transformers can simultaneously attend to various aspects of relationships within the data, gaining a richer understanding.
-3.  **Positional Encoding**: Learn how the model keeps track of the order of words in a sequence, a critical piece of information for language understanding.
-
-By the end of this codelab, you will have a comprehensive understanding of these concepts and how they contribute to the remarkable capabilities of Transformer models.
-
-To begin, ensure you have the Streamlit application running locally. You should see the QuLab title and a navigation sidebar on the left.
-
-## Exploring Self-Attention: How Words Relate
-Duration: 00:10:00
-
-The first stop on our journey is the **Self-Attention Mechanism**, the beating heart of Transformer models. Self-attention allows each word in a sequence to "look" at all other words in the same sequence to compute a new representation that incorporates context. It essentially answers the question: "Which words in this sentence are most relevant to understanding *this* specific word?"
-
-### Navigating to Self-Attention Visualization
-
-In the sidebar on the left, under "Navigation", select **"Self-Attention Visualization"**.
+## Introduction to Transformers and QuLab
+Duration: 0:05
+Welcome to QuLab! In this interactive lab, we embark on a journey into the fascinating world of Transformer models, the revolutionary architecture behind many of today's most advanced AI applications in natural language processing (NLP). Transformers, famously introduced in the paper "Attention Is All You Need" by Vaswani et al. (2017), changed the landscape of AI by demonstrating how models could process sequences of data with unparalleled efficiency and contextual understanding, primarily through a mechanism called "attention."
 
 <aside class="positive">
-You'll notice the main area of the application updates to show the "Self-Attention Mechanism Visualization" header.
+<b>Why are Transformers important?</b> They have become the backbone for tasks like machine translation, text summarization, sentiment analysis, and even generating human-like text, powering models such as BERT, GPT-3, and countless others. Understanding their core components is crucial for anyone interested in modern AI.
 </aside>
 
-### Input Parameters
+This QuLab application is designed to demystify some of the most critical concepts within the Transformer architecture:
+*   **Self-Attention**: How a model weighs the importance of different words in a sentence to understand context.
+*   **Multi-Head Attention**: An extension of self-attention that allows the model to look at different aspects of relationships simultaneously.
+*   **Positional Encoding**: How Transformers, which inherently process words in parallel, gain a sense of word order within a sequence.
 
-In the sidebar, you'll find "Input Parameters" for this section:
+Throughout this guide, you will use the interactive elements of the QuLab application to visualize these concepts, providing you with a deeper, intuitive understanding of how these powerful models work. You can navigate through the different sections of this lab using the sidebar on the left side of the application interface.
 
-*   **Enter a sentence:** Here you can type a custom sentence to see how the Transformer attends to its words. If you leave this empty, the application will generate synthetic data.
-*   **Vocabulary Size:** This slider defines the range of "words" (represented as numbers) that can be generated if using synthetic data.
-*   **Maximum Sentence Length:** Controls the longest possible length for generated synthetic sentences.
-*   **Number of Sentences:** Determines how many synthetic sentences are created.
+## Getting Started with Self-Attention Visualization
+Duration: 0:15
+In this step, we will explore the fundamental Self-Attention mechanism. Self-attention is the heart of the Transformer, allowing the model to dynamically weigh the importance of all other words in a sentence when processing a particular word.
 
-For this step, let's start with synthetic data. Leave the "Enter a sentence" text area empty. You can adjust the sliders for **Vocabulary Size**, **Maximum Sentence Length**, and **Number of Sentences** to observe how they affect the generated data. For instance, set:
-*   **Vocabulary Size** to `50`
-*   **Maximum Sentence Length** to `10`
-*   **Number of Sentences** to `100`
+1.  **Navigate to the Section**: In the QuLab application's sidebar, select **"Self-Attention Visualization"**.
+2.  **Understand the Goal**: This page is designed to help you visualize how self-attention calculates the relationships between different tokens (words) within a single input sequence.
 
-### Running the Analysis
-
-Once you've set your parameters, click the **"Run Analysis"** button in the sidebar.
-
-You'll see a status box appear, indicating that the application is "Generating data..." and then "Calculating attention weights...".
-
-### Understanding Synthetic Data and Data Validation
-
-After the analysis runs, the application will display sections for "Data Validation and Exploration" and "Summary Statistics."
+### Input Parameters for Self-Attention
+On the left sidebar, you'll find "Input Parameters" specific to this page:
+*   **Enter a sentence:** You can type your own sentence here. If you leave this empty, the application will generate synthetic data for analysis.
+*   **Vocabulary Size:** For synthetic data, this controls the number of unique "words" (numerical tokens) that can be generated.
+*   **Maximum Sentence Length:** For synthetic data, this sets the upper limit for the length of generated sentences.
+*   **Number of Sentences:** For synthetic data, this specifies how many sample sentences to create.
 
 <aside class="positive">
-In real-world scenarios, having a reliable and controlled dataset is crucial for testing and debugging complex models like Transformers. Synthetic data helps us rapidly prototype, isolate issues, and clearly demonstrate concepts without the complexities of natural language.
+<b>Tip:</b> Start by leaving the sentence input empty to see how the model processes a generic sequence of numbers (our synthetic data). Then, try entering a sentence like "The quick brown fox jumps over the lazy dog."
 </aside>
 
-The application generates simplified "sentences" represented as numerical sequences. For example:
-`Sentence 1: [32, 23, 10, 39, 44, 18, 25, 34]`
+3.  **Run the Analysis**: Once you've set your parameters, click the **"Run Analysis"** button in the sidebar. The application will process your input and display the results. You will see a status indicator showing the progress of data generation and attention weight calculation.
 
-The data validation steps displayed ensure that the data is well-formed and suitable for analysis, checking for missing values, data types, and providing summary statistics. Take a moment to review the `DataFrame head` and `Summary Statistics` to understand the structure of the data used for attention calculation.
+### Data Validation and Exploration
+After running the analysis, you'll see sections for "Data Validation and Exploration" and "Summary Statistics."
+*   **Business Value of Synthetic Data**:
+    In the early stages of model development, especially when dealing with complex architectures like Transformers, having a reliable and controlled dataset is crucial. Synthetic data allows us to rapidly prototype and test, isolate and debug specific components, and demonstrate concepts clearly without the complexities of real-world language data.
+*   **Technical Implementation of Synthetic Data**:
+    The application's `generate_synthetic_data` function creates simplified numerical sentences. Each "sentence" is a list of integers, where each integer represents a "word" from a predefined vocabulary. This simplified approach allows us to focus purely on the attention mechanism without needing extensive natural language processing (NLP) pipelines.
+*   **Data Validation and Exploration**:
+    Even with synthetic data, understanding its characteristics is crucial. This section provides a pandas DataFrame view of the processed data, including checks for missing values, data types, and basic summary statistics. This ensures the data is well-formed and ready for the attention mechanism.
 
-### Visualizing Self-Attention
-
-Scroll down to the "Self-Attention Visualization" section. You will see a heatmap titled "Self-Attention Weight Heatmap".
+### Self-Attention Mechanism Visualization
+This is the core visualization for this page.
 
 <aside class="positive">
-This heatmap is the core visualization for self-attention. It shows how much 'attention' each word (query) pays to every other word (key) in the sentence.
-</aside>
-
-Here's how to interpret it:
-
-*   **X-axis (Key - Attended To):** Represents the words that are being "attended to".
-*   **Y-axis (Query - Attending From):** Represents the words for which a new, context-aware representation is being computed.
-*   **Color Scale:** The color of each cell indicates the attention weight. Brighter colors (or higher values on the color bar) mean a stronger relationship or more attention.
-
-Try to identify patterns:
-*   A query word attending strongly to itself (the diagonal).
-*   A query word attending to other specific words in the sentence.
-
-The fundamental formula driving this is:
+<b>Understanding the Formula:</b> At the core of the self-attention mechanism is the following formula:
 
 $$ \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V $$
 
 Where:
-*   $Q$ (Query) represents the current word.
-*   $K$ (Key) represents all other words.
-*   $V$ (Value) holds the actual information of other words.
-*   The dot product $QK^T$ measures compatibility, scaled by $\sqrt{d_k}$ (dimension of keys).
-*   $\text{softmax}$ converts these scores into probability-like weights.
-*   Finally, these weights are applied to $V$ to create a weighted sum.
+*   $Q$ (Query): Represents the current word for which we are trying to compute an attention-weighted representation. It's a vector that queries other words for their relevance.
+*   $K$ (Key): Represents all other words in the input sequence. Each word has a key vector that indicates its content. The dot product of the query with a key determines their compatibility.
+*   $V$ (Value): Also represents all other words in the input sequence. Each word has a value vector that contains the actual information to be passed through. Once attention scores are calculated, they are used to weigh these value vectors.
+*   $d_k$: Is the dimension of the key vectors. Dividing by $\sqrt{d_k}$ is a scaling factor that helps to prevent the dot products from becoming too large, which could push the softmax function into regions with very small gradients.
 
-This heatmap gives you a visual understanding of how the model weighs these relationships.
-
-<aside class="negative">
-If you entered a sentence and it was too short, you might see `<pad>` tokens on the heatmap. These are placeholder tokens used to make all sequences the same length for processing. The model typically learns to ignore or assign low attention to these padding tokens.
+This formula essentially calculates how much focus (attention) each word should place on every other word in the sequence, allowing the model to weigh the importance of different words when processing a particular word.
 </aside>
 
-## Diving into Multi-Head Attention: Diverse Perspectives
-Duration: 00:08:00
+*   **Interpreting the Heatmap**:
+    *   The heatmap shows the **Self-Attention Weight Heatmap**.
+    *   The **Y-axis** represents the "Query" tokens (the word currently being processed).
+    *   The **X-axis** represents the "Key" tokens (all other words in the sequence that the query word is attending to).
+    *   The color intensity indicates the **attention weight**. A brighter color means the query word is paying more attention to that key word.
 
-While Self-Attention is powerful, **Multi-Head Attention** takes it a step further. Instead of performing attention once, it performs it multiple times in parallel, each time learning to focus on different aspects of the input sequence. Imagine having several experts, each looking for different types of relationships in the same data simultaneously.
+Observe how each word distributes its attention across other words in the sentence. For example, if you input a sentence like "The cat sat on the mat," you might see the word "sat" paying significant attention to "cat" and "mat," indicating a subject-verb-object relationship.
 
-### Navigating to Multi-Head Attention
+## Exploring Multi-Head Attention
+Duration: 0:15
+Now, let's advance our understanding by looking at Multi-Head Attention, an extension of self-attention that provides the Transformer with multiple "perspectives" when analyzing relationships within a sentence.
 
-In the sidebar on the left, under "Navigation", select **"Multi-Head Attention"**.
+1.  **Navigate to the Section**: In the QuLab application's sidebar, select **"Multi-Head Attention"**.
+2.  **Understand the Goal**: This page allows you to visualize how multiple self-attention mechanisms (heads) work in parallel, each focusing on different aspects of the input sequence.
 
-### Input Parameters for MHA
-
-Similar to Self-Attention, you'll find input parameters in the sidebar. This time, there's an additional crucial parameter:
-
-*   **Number of Attention Heads:** This slider allows you to specify how many independent "attention experts" the model will use. Each head learns its own set of Query, Key, and Value projections.
-
-For this step, let's keep the synthetic data generation (leave the sentence input empty) and try setting **Number of Attention Heads** to `4`. You can experiment with other values as well.
-
-<aside class="negative">
-The application will give an error if the "Embedding Dimension" (which is fixed internally for this example at 64) is not divisible by the "Number of Attention Heads". Ensure you choose a number of heads that divides 64 (e.g., 1, 2, 4, 8).
-</aside>
-
-### Running the MHA Analysis
-
-Click the **"Run MHA Analysis"** button in the sidebar.
-
-You'll again see status updates as data is generated and multi-head attention weights are calculated.
-
-### Visualizing Multi-Head Attention
-
-Scroll down to the "Multi-Head Attention Visualization" section. Instead of a single heatmap, you'll now see several **tabs**, one for each attention head you specified (e.g., "Head 1", "Head 2", "Head 3", "Head 4").
-
-Click through each tab. Observe how the attention patterns differ from head to head.
+### Input Parameters for Multi-Head Attention
+Similar to the previous page, you'll find input parameters in the sidebar:
+*   **Enter a sentence for MHA:** You can type your own sentence or use synthetic data.
+*   **Vocabulary Size (MHA), Maximum Sentence Length (MHA), Number of Sentences (MHA):** These control synthetic data generation, similar to Page 1.
+*   **Number of Attention Heads:** This is a new, crucial parameter. It determines how many independent attention mechanisms will be run in parallel.
 
 <aside class="positive">
-Each heatmap represents the unique focus of an individual attention head. One head might focus on syntactic connections (e.g., verbs attending to their subjects), while another might focus on semantic relationships (e.g., synonyms attending to each other).
+<b>Tip:</b> Start with a small number of heads (e.g., 2 or 4) and then increase it to see more diverse patterns. Remember that the embedding dimension must be divisible by the number of heads for technical reasons, but the app handles this for you with a default embedding dimension.
 </aside>
 
-The Multi-Head Attention mechanism is defined as:
+3.  **Run the MHA Analysis**: Click the **"Run MHA Analysis"** button in the sidebar.
+
+### Data Validation and Exploration (MHA)
+Again, you'll see data validation and summary statistics, confirming the data is correctly prepared for multi-head attention.
+
+### Multi-Head Attention Visualization
+
+<aside class="positive">
+<b>Technical Explanation:</b> While Self-Attention allows a model to weigh the importance of different words, Multi-Head Attention takes this a step further by performing this attention mechanism multiple times in parallel. Each "head" is an independent self-attention module that learns to focus on different aspects of the input. The results from these separate attention heads are then concatenated and linearly transformed to produce the final output.
+
+The formula for Multi-Head Attention is given by:
 
 $$ \text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O $$
 
@@ -151,88 +109,80 @@ Where each $\text{head}_i$ is computed as:
 
 $$ \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V) $$
 
-*   The $W_i^Q, W_i^K, W_i^V$ are unique learned projection matrices for each head, allowing them to transform the input $Q, K, V$ into different subspaces.
-*   The results from all heads are then concatenated (`Concat`) and linearly transformed by $W^O$ to produce the final output.
+And:
+*   $h$: Represents the number of attention heads.
+*   $Q, K, V$: Are the Query, Key, and Value matrices, respectively, derived from the input embeddings.
+*   $W_i^Q, W_i^K, W_i^V$: Are learned weight matrices for each head $i$, which project the $Q, K, V$ into different, lower-dimensional subspaces. This allows each head to focus on different information.
+*   $\text{Concat}(\text{head}_1, ..., \text{head}_h)$: Concatenates the outputs of all attention heads.
+*   $W^O$: Is a final learned linear projection that combines the concatenated outputs from all heads into the final Multi-Head Attention output.
 
-This parallel processing of attention enriches the model's ability to understand the input comprehensively. By examining the individual heatmaps, you gain intuitive insights into this powerful mechanism.
-
-## Understanding Positional Encoding: The Order of Things
-Duration: 00:07:00
-
-Transformers process all words in a sequence simultaneously, which means they inherently lose information about the word order. Yet, word order is critical for language understanding (e.g., "dog bites man" vs. "man bites dog"). **Positional Encoding** is the ingenious solution to this problem, injecting information about a word's position into its embedding.
-
-### Navigating to Positional Encoding
-
-In the sidebar on the left, under "Navigation", select **"Positional Encoding"**.
-
-### Input Parameters for Positional Encoding
-
-In the sidebar, you'll find "Positional Encoding Parameters":
-
-*   **Maximum Sequence Length (PE):** This slider determines the longest sequence for which positional encodings will be generated.
-*   **Embedding Dimension (PE):** This defines the dimensionality of the word embeddings to which the positional encodings will be added. It should match the `embed_dim` used in the attention layers.
-
-Set:
-*   **Maximum Sequence Length (PE)** to `20`
-*   **Embedding Dimension (PE)** to `64`
-
-### Generating Positional Encoding
-
-Click the **"Generate Positional Encoding"** button in the sidebar.
-
-You'll see a status box indicating "Generating positional encodings...".
-
-### Visualizing Positional Encoding
-
-Scroll down to the "Positional Encoding Heatmap" section. You will see a heatmap titled "Positional Encoding Values".
-
-<aside class="positive">
-This heatmap visualizes the unique signature given to each position in a sequence. It's how the Transformer knows where a word is located, even though it processes all words at once.
+The key idea here is that by having multiple heads, the model can simultaneously attend to information from different representation subspaces at different positions. For example, one head might learn to attend to direct syntactic dependencies, while another might focus on more distant semantic relationships. This parallel processing of attention enriches the model's ability to understand the input comprehensively.
 </aside>
 
-Here's how to interpret it:
+*   **Understanding the Visualization**:
+    *   Instead of one heatmap, you will now see multiple heatmaps, organized into tabs, labeled "Head 1", "Head 2", etc.
+    *   Each tab displays the attention weights for a single, independent attention head.
+    *   **Diverse Focus**: Compare the heatmaps across different heads. You'll likely observe that each head exhibits a unique pattern of attention. One head might focus heavily on the word immediately preceding it, while another might highlight relationships between a subject and its distant verb.
+    *   This diversity allows the Transformer to build a richer, more nuanced understanding of the input by capturing different types of contextual information simultaneously.
 
-*   **X-axis (Embedding Dimension):** Represents the different dimensions within the positional encoding vector.
-*   **Y-axis (Position in Sequence):** Represents the position of a token (0 for the first, 1 for the second, etc.).
-*   **Color Scale:** The color indicates the value of the positional encoding at a specific position and dimension. Red typically means positive values, blue means negative, and white is close to zero.
+## Understanding Positional Encoding
+Duration: 0:10
+The Transformer architecture processes words in a sequence in parallel, which is computationally efficient but means it loses information about the order of words. Positional Encoding is how Transformers regain a "sense of order" for the words in a sentence.
 
-The positional encodings are generated using sine and cosine functions:
+1.  **Navigate to the Section**: In the QuLab application's sidebar, select **"Positional Encoding"**.
+2.  **Understand the Goal**: This page visualizes the mathematical functions used to create unique position signals for each token in a sequence.
+
+### Input Parameters for Positional Encoding
+In the sidebar, you'll find parameters for this page:
+*   **Maximum Sequence Length (PE):** This determines the longest sequence for which positional encodings will be generated.
+*   **Embedding Dimension (PE):** This refers to the size of the vector used to represent each word or position. Positional encodings must match this dimension to be added to word embeddings.
+
+3.  **Generate Positional Encoding**: Set your desired parameters and click the **"Generate Positional Encoding"** button.
+
+### Positional Encoding Visualization
+
+<aside class="positive">
+<b>Technical Explanation:</b> Since the Transformer architecture does not inherently model sequence order (unlike recurrent neural networks), we need a way to inject information about the relative or absolute position of tokens in the sequence. Positional encodings serve this purpose. These are vectors that are added to the input embeddings at the bottom of the encoder and decoder stacks.
+
+The original Transformer paper uses sine and cosine functions of different frequencies to generate these encodings. The specific formulas for the positional encoding at position $pos$ and dimension $i$ are:
 
 $$ PE(pos, 2i) = \sin\left(\frac{pos}{10000^{2i/d_{model}}}\right) $$
 
 $$ PE(pos, 2i+1) = \cos\left(\frac{pos}{10000^{2i/d_{model}}}\right) $$
 
 Where:
-*   $pos$ is the position of the token.
-*   $i$ is the dimension within the embedding vector.
-*   $d_{model}$ is the embedding dimension.
+*   $pos$: Represents the position of the token in the sequence (e.g., 0 for the first token, 1 for the second, and so on).
+*   $i$: Represents the dimension within the embedding vector. For a $d_{model}$-dimensional embedding, $i$ ranges from $0$ to $d_{model}/2 - 1$.
+*   $d_{model}$: Is the dimensionality of the model (i.e., the embedding dimension).
 
-Observe the following patterns in the heatmap:
-*   **Alternating Stripes:** Notice the alternating horizontal stripes of colors. This is due to the sine and cosine functions operating on even ($2i$) and odd ($2i+1$) dimensions, respectively.
-*   **Varying Frequencies:** Some vertical stripes change color slowly across positions, while others change rapidly. This is because the $10000^{2i/d_{model}}$ term causes different dimensions to oscillate at different frequencies. Dimensions with smaller $i$ have lower frequencies, and higher $i$ have higher frequencies.
-*   **Unique Signatures:** Crucially, each row (each position) has a unique combination of these sinusoidal values across all dimensions. This unique combination is the "positional signature" that the Transformer uses to understand the order of tokens.
+This sinusoidal approach has a few key advantages:
+1.  **Unique Representation**: Each position gets a unique encoding.
+2.  **Generalization**: It can generalize to longer sequence lengths than those seen during training.
+3.  **Relative Positioning**: A linear transformation can represent a relative position, which is beneficial for the attention mechanism.
 
 By adding these positional encodings to the word embeddings, the Transformer can distinguish between words at different positions, allowing it to understand the grammatical structure and context that depends on word order.
-
-## Conclusion and Next Steps
-Duration: 00:03:00
-
-Congratulations! You have successfully explored the core concepts of Transformer models using the QuLab application. You've seen firsthand how:
-
-*   **Self-Attention** enables a model to weigh the relevance of different words to build contextual representations.
-*   **Multi-Head Attention** extends this by allowing the model to learn diverse relationships from different perspectives simultaneously.
-*   **Positional Encoding** provides the crucial sense of order to sequence-agnostic Transformers, allowing them to understand the flow and structure of language.
-
-<aside class="positive">
-These three mechanisms are fundamental to the success of modern NLP models like BERT, GPT, and many others. A strong grasp of these concepts is a significant step towards understanding the cutting edge of AI.
 </aside>
 
-### Further Exploration
+*   **Interpreting the Heatmap**:
+    *   The heatmap displays the values of the positional encoding matrix.
+    *   The **Y-axis** represents the "Position in Sequence" (e.g., Pos 0, Pos 1, ...).
+    *   The **X-axis** represents the "Embedding Dimension" (e.g., Dim 0, Dim 1, ...).
+    *   **Alternating Patterns**: Observe the distinct, alternating sine and cosine wave patterns across the dimensions. Dimensions with lower indices (smaller frequencies) change slowly across positions, while those with higher indices (larger frequencies) change more rapidly.
+    *   **Unique Positional Signature**: Each row (representing a specific position) has a unique combination of sine and cosine values across all dimensions. This unique "signature" is what the Transformer uses to identify the position of each word.
 
-To deepen your understanding, we encourage you to:
+## Conclusion and Further Exploration
+Duration: 0:05
+Congratulations! You've successfully navigated the core components of the Transformer architecture using QuLab.
 
-*   **Experiment with different sentences:** Go back to "Self-Attention Visualization" or "Multi-Head Attention" and type in your own sentences. Observe how the attention patterns change based on the words and their context. Try sentences with clear relationships (e.g., "The cat sat on the mat.") and more ambiguous ones.
-*   **Adjust parameters:** Change the "Number of Attention Heads" in the Multi-Head Attention section or the "Maximum Sequence Length" and "Embedding Dimension" in Positional Encoding. See how these changes impact the visualizations.
-*   **Read the "Attention Is All You Need" paper:** If you're interested in the deeper technical details, refer to the original paper by Vaswani et al. (2017).
+We've covered:
+*   The **Self-Attention** mechanism, which allows a model to weigh the relevance of different words in a sequence.
+*   **Multi-Head Attention**, which extends this idea by enabling the model to consider multiple distinct relationships and contexts simultaneously.
+*   **Positional Encoding**, an ingenious solution to inject sequence order information into parallel-processing Transformers.
 
-Thank you for participating in this QuLab codelab! We hope this interactive experience has illuminated the powerful and elegant principles behind Transformer models.
+These concepts are foundational to understanding how modern, powerful NLP models achieve their remarkable performance. By visualizing these mechanisms, you've gained a deeper, more intuitive grasp of the "Attention Is All You Need" paradigm.
+
+<aside class="positive">
+<b>What's next?</b> We encourage you to go back to each section and experiment with different input sentences and parameters. See how varying the "Number of Attention Heads" changes the attention patterns, or how adjusting the "Maximum Sequence Length" affects the positional encodings. The more you interact, the deeper your understanding will become!
+</aside>
+
+Thank you for exploring Transformer models with QuLab!
